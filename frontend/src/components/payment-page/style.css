@@ -1,0 +1,39 @@
+.payment-page-container {
+  width: 100%;
+  height: 80vh;
+  padding: 40px 300px;
+}
+.payment-booking {
+  width: 100%;
+  height: 100%;
+  box-shadow: -1px 2px 16px 2px rgba(0, 0, 0, 0.28);
+  -webkit-box-shadow: -1px 2px 16px 2px rgba(0, 0, 0, 0.28);
+  -moz-box-shadow: -1px 2px 16px 2px rgba(0, 0, 0, 0.28);
+  padding: 0 20px;
+  border-radius: 15px;
+}
+.booking-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.booking-heading {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+.booking-details {
+  color: grey;
+  width: 300px;
+  height: 120px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.booking-detail {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
