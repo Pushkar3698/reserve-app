@@ -2,25 +2,26 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { add_seats } from "../../redux/action";
 
-const Seat = ({ seatName, includes, price }) => {
+const Seat = ({ seatNumber, isAvailable, id, includes }) => {
   const dispatch = useDispatch();
 
   const seatHandler = () => {
+    if (!isAvailable) {
+      return;
+    }
+
     const seatData = {
-      seatName,
-      category: seatName[0],
-      seat: +seatName[1],
-      price: price,
+      seatNumber,
     };
 
     dispatch(add_seats(seatData));
   };
-
+  const bg = isAvailable === false ? "grey" : includes ? "blue" : "";
   return (
     <span
       className="seat"
       style={{
-        backgroundColor: `${includes ? "blue" : ""}`,
+        backgroundColor: `${bg}`,
       }}
       onClick={seatHandler}
     ></span>

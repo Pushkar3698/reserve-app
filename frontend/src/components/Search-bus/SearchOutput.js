@@ -7,14 +7,17 @@ const SearchOutput = ({
   getDetails,
   cityData,
   selectCity,
+  search,
 }) => {
   const [modal, setmodal] = useState(false);
+  const [filter, setfilter] = useState("");
 
   const selectCityHander = (val) => {
     getDetails(val, where);
-    // selectCity(val);
+
     setmodal(false);
   };
+
   return (
     <div className="input">
       <div className="search-input" onClick={() => setmodal((prev) => !prev)}>
@@ -29,15 +32,30 @@ const SearchOutput = ({
           animate={{ y: 0, opacity: 1 }}
           transition={{ ease: "easeInOut", duration: 0.3 }}
         >
-          {cityData.map((el, i) => (
-            <li
-              className="search-input-city"
-              key={i}
-              onClick={(e) => selectCityHander(e.target.textContent)}
-            >
-              {el.source}
-            </li>
-          ))}
+          {search && (
+            <div className="search-city">
+              <input
+                type="text"
+                name=""
+                id=""
+                onChange={(e) => setfilter(e.target.value)}
+                value={filter}
+              />
+            </div>
+          )}
+          {cityData
+            .filter((el, i) =>
+              el.source.toLowerCase().includes(filter.toLowerCase())
+            )
+            .map((el, i) => (
+              <li
+                className="search-input-city"
+                key={i}
+                onClick={(e) => selectCityHander(e.target.textContent)}
+              >
+                {el.source}
+              </li>
+            ))}
         </motion.div>
       )}
     </div>

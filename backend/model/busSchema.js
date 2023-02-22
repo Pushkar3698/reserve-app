@@ -4,7 +4,15 @@ const { ObjectId } = mongoose.Schema;
 
 const busSchema = new Schema({
   busNumber: { type: String, required: true },
-  routes: [{ type: ObjectId, ref: "Routes" }],
+  routes: [
+    {
+      Departuretime: {
+        type: String,
+      },
+      ReachingTime: { type: String },
+      routeId: { type: ObjectId, ref: "Routes" },
+    },
+  ],
   type: { type: String, required: true },
   fare: { type: Number, required: true },
   seats: [

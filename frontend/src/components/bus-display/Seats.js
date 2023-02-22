@@ -1,33 +1,22 @@
 import React from "react";
 import Seat from "./Seat";
 
-const mergeSeats = (obj) => {
-  let result = [];
-
-  for (const key in obj) {
-    result = result.concat(obj[key]);
-  }
-  return result;
-};
-
 const Seats = ({ seats, selectedSeats }) => {
-  let upper = mergeSeats(seats);
-
-  const includes = (val) => {
-    return selectedSeats.some((el) => el.seatName === val);
+  const includes = (seatNumber) => {
+    return selectedSeats.some((el, i) => el.seatNumber === seatNumber);
   };
 
   return (
     <div className="bus-seats-component">
       <div className="bus-upper-seats">
         <div className="upper-seat">
-          {upper.map((el, i) => (
+          {seats.map((el, i) => (
             <Seat
-              key={i}
-              seatName={el.category + el.seat}
-              userSeats={selectedSeats}
-              includes={includes(el.category + el.seat)}
-              price={el.price}
+              key={el._id}
+              seatNumber={el.seatNumber}
+              isAvailable={el.isAvailable}
+              id={el._id}
+              includes={includes(el.seatNumber)}
             />
           ))}
         </div>

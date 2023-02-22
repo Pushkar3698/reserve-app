@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import background from "../../resources/background.webp";
 import { Button } from "../ui/button/Button";
 import SearchOutput from "./SearchOutput";
@@ -6,8 +6,7 @@ import SearchTime from "./SearchTime";
 import "./style.css";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { bus_Details, bus_Information } from "../../redux/action";
-import { routes } from "./data";
+import { bus_Details } from "../../redux/action";
 
 export const SearchBus = () => {
   const [details, setdetails] = useState({
@@ -17,14 +16,20 @@ export const SearchBus = () => {
   });
   const [error, seterror] = useState(false);
   const [errorMessage, seterrorMessage] = useState("");
-  const [selectedCity, setselectedCity] = useState("");
+  const [routes, setroutes] = useState([]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // const selectCity = (val) => {
-  //   setselectedCity(val);
-  // };
+  const getRoutes = async () => {
+    const fetchdata = await fetch("http://localhost:8001/getRoutes");
+    const res = await fetchdata.json();
+    setroutes(res);
+  };
+
+  useEffect(() => {
+    getRoutes();
+  }, []);
 
   const sourceCity = routes.map((el, i) => {
     return {
@@ -70,16 +75,16 @@ export const SearchBus = () => {
     });
 
     const res = await fetchdata.json();
-    console.log(res);
-    if (res.error) {
-      seterror(true);
-      seterrorMessage(res.message);
-      return;
-    } else {
-      dispatch(bus_Information(res));
-      dispatch(bus_Details(details));
-      navigate("/bus-display");
-    }
+
+    // if (res.error) {
+    //   seterror(true);
+    //   seterrorMessage(res.message);
+    //   return;
+    // } else {
+    //   dispatch(bus_Details(details));
+
+    //   navigate(`/bus-display/routeId=${res[0]._id}&date=${details.date}`);
+    // }
   };
 
   return (
@@ -93,7 +98,7 @@ export const SearchBus = () => {
             cityName={details.to}
             getDetails={detailsHandler}
             cityData={sourceCity}
-            // selectCity={selectCity}
+            search={true}
           />
           <SearchOutput
             where={"from"}

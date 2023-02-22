@@ -4,19 +4,12 @@ import "./busCard.css";
 import BusCardLeft from "./BusCardLeft";
 import BusSeats from "./BusSeats";
 import { useDispatch, useSelector } from "react-redux";
-import { select_bus } from "../../redux/action";
-
-const getMin = (arr) => {
-  let result = 10000;
-  for (let i = 0; i < arr.length; i++) {
-    result = Math.min(result, arr[i]);
-  }
-  return result;
-};
+import { select_bus, unavailable_seats } from "../../redux/action";
+import { useParams } from "react-router-dom";
 
 const BusCard = ({
   busData,
-  routeId,
+  busId,
   arrivalTime,
   departureTime,
   destination,
@@ -25,14 +18,43 @@ const BusCard = ({
   const [seatDisplay, setseatDisplay] = useState(false);
   const { selectedBus, busDetails } = useSelector((state) => state.reducer);
 
+  const { date } = busDetails;
   const { seats } = busData;
+  let { routeId } = useParams();
+
+  const bus = {
+    busId,
+    arrivalTime,
+    departureTime,
+    destination,
+    source,
+  };
 
   const dispatch = useDispatch();
 
-  const seatDisplayHandler = () => {
-    setseatDisplay(!seatDisplay);
-
+  const seatDisplayHandler = async () => {
     dispatch(select_bus({ ...busData, seletedSeats: [] }));
+
+    const data = {
+      routeId: routeId.split("&")[0].split("=")[1],
+      date: new Date(routeId.split("&")[1].split("=")[1]),
+      busId: busId,
+    };
+
+    const fetchdata = await fetch("http://localhost:8001/getSeats", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const res = await fetchdata.json();
+
+    if (res.length !== 0) {
+      dispatch(unavailable_seats(res, data.busId));
+    }
+    setseatDisplay(!seatDisplay);
   };
 
   return (
@@ -62,7 +84,7 @@ const BusCard = ({
           <BusSeats
             seats={seats}
             selectedSeats={selectedBus.seletedSeats}
-            selectedBus={{ selectedBus, busDetails }}
+            selectedBus={{ selectedBus, bus }}
           />
         )}
       </div>

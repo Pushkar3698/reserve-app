@@ -1,16 +1,16 @@
 import React from "react";
 
 const BookingDetails = ({ userDetails }) => {
-  const { name, email, mobile, gender, age } = userDetails;
+  const { name, email, mobile, gender, age, id, paymentId } = userDetails;
   return (
     <div className="booking-details">
       <div className="booking-detail">
         <div className="left-side-detail">Ticket Id:</div>
-        <div className="right-side-detail">56UIP43</div>
+        <div className="right-side-detail">{id}</div>
       </div>
       <div className="booking-detail">
         <div className="left-side-detail">Payment Id:</div>
-        <div className="right-side-detail">56UIP43</div>
+        <div className="right-side-detail">{paymentId}</div>
       </div>
       <div className="booking-detail">
         <div className="left-side-detail">Passenger Details:</div>

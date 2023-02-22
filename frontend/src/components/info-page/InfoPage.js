@@ -6,15 +6,17 @@ import "./style.css";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { user_Details } from "../../redux/action";
+import { payement_succesful, user_Details } from "../../redux/action";
+import { useParams } from "react-router-dom";
 
 const InfoPage = () => {
-  const { selectedBus } = useSelector((state) => state.reducer);
-
-  const price = selectedBus.seletedSeats.reduce(
-    (acc, curr) => acc + curr.price,
-    0
+  const { selectedBus, busDetails, busInformation } = useSelector(
+    (state) => state.reducer
   );
+
+  const price = selectedBus.seletedSeats.length * selectedBus.fare;
+
+  let { date } = useParams();
 
   const nameRef = useRef();
   const mobileRef = useRef();
@@ -25,16 +27,31 @@ const InfoPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     const data = {
-      name: nameRef.current.value,
-      mobile: mobileRef.current.value,
-      email: emailRef.current.value,
-      gender: genderRef.current.value,
-      age: age.current.value,
+      userName: nameRef.current.value,
+      userMobile: mobileRef.current.value,
+      userEmail: emailRef.current.value,
+      userGender: genderRef.current.value,
+      userAge: age.current.value,
+      busId: selectedBus._id,
+      selectedSeats: selectedBus.seletedSeats,
+      totalPrice: price,
+      dateOfJourney: new Date(date.split("=")[1]),
+      routeId: busInformation[0]._id,
     };
 
-    dispatch(user_Details(data));
+    const fetchdata = await fetch("http://localhost:8001/bookTicket", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const res = await fetchdata.json();
+    console.log(res);
+    dispatch(payement_succesful(res));
     navigate("/info/payment");
   };
 
