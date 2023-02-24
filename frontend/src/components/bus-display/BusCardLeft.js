@@ -10,7 +10,7 @@ const BusCardLeft = ({
 }) => {
   // const { name, departure, duration, _id, reachingTime, type, rating } = data;
 
-  const { _id, busName, fare, seats, type } = data;
+  const { busName, type } = data;
 
   return (
     <div className="bus-card-left">

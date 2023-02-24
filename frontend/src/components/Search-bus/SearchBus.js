@@ -76,15 +76,15 @@ export const SearchBus = () => {
 
     const res = await fetchdata.json();
 
-    // if (res.error) {
-    //   seterror(true);
-    //   seterrorMessage(res.message);
-    //   return;
-    // } else {
-    //   dispatch(bus_Details(details));
+    if (res.error) {
+      seterror(true);
+      seterrorMessage(res.message);
+      return;
+    } else {
+      dispatch(bus_Details(details));
 
-    //   navigate(`/bus-display/routeId=${res[0]._id}&date=${details.date}`);
-    // }
+      navigate(`/bus-display/routeId=${res[0]._id}&date=${details.date}`);
+    }
   };
 
   return (

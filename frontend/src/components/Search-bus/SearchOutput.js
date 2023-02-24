@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-const SearchOutput = ({
-  where,
-  cityName,
-  getDetails,
-  cityData,
-  selectCity,
-  search,
-}) => {
+const SearchOutput = ({ where, cityName, getDetails, cityData, search }) => {
   const [modal, setmodal] = useState(false);
   const [filter, setfilter] = useState("");
 

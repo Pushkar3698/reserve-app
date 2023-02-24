@@ -3,49 +3,26 @@ const BusModel = require("../model/busSchema");
 const BookingModel = require("../model/busBooking");
 const { busRoutes } = require("../data/data2");
 
-const helper = (id, arr) => {
-  let results = [];
-
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i].buses.includes(id.toString())) {
-      results.push(arr[i]._id);
-    }
-  }
-
-  return results;
-};
-
 exports.getBusDetails = async (req, res, next) => {
   try {
     const { to, from, date } = req.body;
 
-    // /// modification code for sample data //
+    const cities = await Routes.find({
+      source: to,
+      destination: from,
+    }).populate("buses");
+    if (!cities || cities.length === 0) {
+      const error = new Error("could not find the selected routes");
 
-    const buses = await BusModel.find();
+      throw error;
+    }
 
-    buses.forEach(async (el, i) => {
-      busRoutes[i].forEach((route, i) => {
-        el.routes.push(route);
-      });
-      await el.save();
-    });
-
-    // const cities = await Routes.find({
-    //   source: to,
-    //   destination: from,
-    // }).populate("buses");
-    // if (!cities || cities.length === 0) {
-    //   const error = new Error("could not find the selected routes");
-
-    //   throw error;
-    // }
-
-    // res.status(200).json(cities);
+    res.status(200).json(cities);
   } catch (err) {
     console.log(err);
-    // res
-    //   .status(400)
-    //   .json({ message: "could not find the selected routes", error: true });
+    res
+      .status(400)
+      .json({ message: "could not find the selected routes", error: true });
   }
 };
 

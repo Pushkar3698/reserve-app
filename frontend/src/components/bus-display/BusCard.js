@@ -6,6 +6,7 @@ import BusSeats from "./BusSeats";
 import { useDispatch, useSelector } from "react-redux";
 import { select_bus, unavailable_seats } from "../../redux/action";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const BusCard = ({
   busData,
@@ -59,7 +60,12 @@ const BusCard = ({
 
   return (
     <>
-      <div className="bus-card">
+      <motion.div
+        className="bus-card"
+        initial={{ scale: 0.5, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ ease: "easeInOut", duration: 0.4 }}
+      >
         <div className="bus-card-content">
           <BusCardLeft
             data={busData}
@@ -87,7 +93,7 @@ const BusCard = ({
             selectedBus={{ selectedBus, bus }}
           />
         )}
-      </div>
+      </motion.div>
     </>
   );
 };

@@ -6,13 +6,11 @@ import "./style.css";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { payement_succesful, user_Details } from "../../redux/action";
+import { payement_succesful } from "../../redux/action";
 import { useParams } from "react-router-dom";
 
 const InfoPage = () => {
-  const { selectedBus, busDetails, busInformation } = useSelector(
-    (state) => state.reducer
-  );
+  const { selectedBus, busInformation } = useSelector((state) => state.reducer);
 
   const price = selectedBus.seletedSeats.length * selectedBus.fare;
 

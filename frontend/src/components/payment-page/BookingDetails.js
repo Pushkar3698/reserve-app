@@ -1,7 +1,7 @@
 import React from "react";
 
 const BookingDetails = ({ userDetails }) => {
-  const { name, email, mobile, gender, age, id, paymentId } = userDetails;
+  const { name, mobile, gender, age, id, paymentId } = userDetails;
   return (
     <div className="booking-details">
       <div className="booking-detail">

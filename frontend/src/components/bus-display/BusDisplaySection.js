@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BusCard from "./BusCard";
 import SideBar from "./SideBar";
 import "./style.css";
@@ -12,6 +12,7 @@ export const BusDisplaySection = () => {
   let { routeId } = useParams();
 
   const dispatch = useDispatch();
+  const route = routeId.split("&")[0].split("=")[1];
 
   const getRoutesFromId = async (id) => {
     const fetchdata = await fetch(`http://localhost:8001/bus-display/${id}`, {
@@ -24,8 +25,16 @@ export const BusDisplaySection = () => {
   };
 
   useEffect(() => {
-    getRoutesFromId(routeId.split("&")[0].split("=")[1]);
+    getRoutesFromId(route);
   }, []);
+
+  const getTime = (arr, str) => {
+    const findRoute = arr.find(
+      (el, i) => el.routeId.toString() === route.toString()
+    );
+
+    return findRoute[str];
+  };
 
   return (
     <div className="bus-container">
@@ -36,8 +45,8 @@ export const BusDisplaySection = () => {
             <BusCard
               key={el._id}
               busId={el._id}
-              arrivalTime={busInformation[0].arrivalTime}
-              departureTime={busInformation[0].departureTime}
+              arrivalTime={getTime(el.routes, "Departuretime")}
+              departureTime={getTime(el.routes, "Reachingtime")}
               destination={busInformation[0].destination}
               source={busInformation[0].source}
               busData={el}

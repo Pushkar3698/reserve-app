@@ -9,7 +9,9 @@ const busSchema = new Schema({
       Departuretime: {
         type: String,
       },
-      ReachingTime: { type: String },
+      Reachingtime: {
+        type: String,
+      },
       routeId: { type: ObjectId, ref: "Routes" },
     },
   ],
